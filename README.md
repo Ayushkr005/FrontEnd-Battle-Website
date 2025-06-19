@@ -4,7 +4,7 @@
  # 📖 About The Project
 Synergy Solutions is a modern, fully-responsive, and highly interactive front-end project for a fictional tech corporation. It is designed to showcase advanced UI/UX concepts, dynamic content handling, and sophisticated animations using vanilla JavaScript, HTML5, and CSS3. The project includes multiple pages, a simulated e-commerce flow, and detailed data visualizations, all built to be visually appealing and engaging.
 
-🌐 Live Demo
+🌐 [Live Demo](https://frontend-battle-website.netlify.app/)
 
 ## Key features
 
