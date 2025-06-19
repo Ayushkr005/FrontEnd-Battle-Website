@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unparalleled BSS/OSS Capabilities - Synergy Solutions</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body id="services-detail-page">
+
+    <div class="services-detail-main-container">
+        <a href="index.html" class="back-to-home-btn clickable-element" data-info="Back to Homepage">
+            <i class="fas fa-chevron-left"></i> Back to SynergySolutions
+        </a>
+
+        <div class="bss-oss-capabilities-container">
+            <p class="bss-oss-tagline">[ EFFICIENCY, SCALABILITY, AND AGILITY ]</p>
+            <h1>Unparalleled BSS/OSS Capabilities</h1>
+
+            <div class="capabilities-tabs">
+                <button class="capability-tab-btn active clickable-element" data-tab="billing" data-info="Billing Tab">
+                    <i class="fas fa-wallet"></i> BILLING
+                </button>
+                <button class="capability-tab-btn clickable-element" data-tab="charging" data-info="Charging Tab">
+                    <i class="fas fa-piggy-bank"></i> CHARGING
+                </button>
+                <button class="capability-tab-btn clickable-element" data-tab="catalog" data-info="Catalog Tab">
+                    <i class="fas fa-layer-group"></i> CATALOG
+                </button>
+                <button class="capability-tab-btn clickable-element" data-tab="events" data-info="Events Tab">
+                    <i class="fas fa-network-wired"></i> EVENTS
+                </button>
+            </div>
+
+            <div class="capability-content-area">
+                <!-- NEW: Transition Overlay -->
+                <div class="capability-transition-overlay">
+                    <div class="spinner"></div>
+                </div>
+                <!-- END NEW -->
+
+                <!-- Billing Content -->
+                <div id="billing-content" class="capability-tab-content active"> <!-- JS will manage active state fully -->
+                    <div class="content-text">
+                        <h2>Real-Time Convergent Billing</h2>
+                        <p>Instantaneous, accurate billing across all services and payment methods.</p>
+                    </div>
+                    <div class="content-visual billing-visual">
+                        <div class="mockup-ems-panel">
+                            <div class="mockup-header"><i class="fas fa-cogs"></i> EMS</div>
+                            <div class="mockup-sidebar">
+                                <div class="mockup-sidebar-icon clickable-element" data-info="Dashboard View"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="mockup-sidebar-icon active-mockup-icon clickable-element" data-info="Billing View"><i class="fas fa-file-invoice-dollar"></i></div>
+                                <div class="mockup-sidebar-icon clickable-element" data-info="Orders View"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="mockup-sidebar-icon clickable-element" data-info="Settings View"><i class="fas fa-cog"></i></div>
+                            </div>
+                            <div class="mockup-main-content">
+                                <h4>Billing</h4>
+                                <div class="mockup-stats-grid">
+                                    <div class="mockup-stat-item clickable-element" data-info="View Estimated Invoices">
+                                        <div><i class="fas fa-file-alt"></i> 112 355</div>
+                                        <span>Estimated invoices</span>
+                                    </div>
+                                    <div class="mockup-stat-item clickable-element" data-info="View Estimated Duration">
+                                        <div><i class="fas fa-clock"></i> 45 MIN</div>
+                                        <span>Estimated duration</span>
+                                    </div>
+                                    <div class="mockup-stat-item clickable-element" data-info="View Current Period End Date">
+                                        <div><i class="fas fa-calendar-check"></i> 17 DAYS</div>
+                                        <span>Current period ends</span>
+                                    </div>
+                                </div>
+                                <div class="mockup-billing-table">
+                                    <div class="mockup-table-row header">
+                                        <span>Billing period</span><span>Total invoices</span><span>Collected Payments</span><span>Duration</span>
+                                    </div>
+                                    <div class="mockup-table-row clickable-element" data-info="View March 2025 Billing Details">
+                                        <span>MAR 2025</span><span>114 824</span><span class="payment-collected low">44%</span><span>47 MIN 23 SEC</span>
+                                    </div>
+                                    <div class="mockup-table-row clickable-element" data-info="View January 2025 Billing Details">
+                                        <span>JAN 2025</span><span>112 221</span><span class="payment-collected high">98%</span><span>43 MIN 01 SEC</span>
+                                    </div>
+                                     <div class="mockup-table-row clickable-element" data-info="View December 2024 Billing Details">
+                                        <span>DEC 2024</span><span>109 567</span><span class="payment-collected mid">68%</span><span>45 MIN 10 SEC</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charging Content -->
+                <div id="charging-content" class="capability-tab-content">
+                    <div class="content-text">
+                        <h2>Online Charging System</h2>
+                        <p>AI-powered insights that predict customer needs and drive personalized experiences.</p>
+                    </div>
+                    <div class="content-visual charging-visual">
+                        <div class="mockup-charging-panel">
+                            <div class="plan-rate-box clickable-element" data-info="View Current Plan Details">
+                                PLAN <i class="fas fa-arrow-right"></i>
+                                <div class="rate">€0.<span class="small-zeros">00</span> <span class="unit">/min</span></div>
+                            </div>
+                            <div class="traffic-filters">
+                                <p>TRAFFIC TYPE</p>
+                                <button class="clickable-element" data-info="Country Filter"><i class="fas fa-globe-americas"></i> COUNTRY +</button>
+                                <button class="clickable-element" data-info="Call Type Filter"><i class="fas fa-phone-alt"></i> CALL TYPE +</button>
+                                <button class="clickable-element" data-info="Zone Filter"><i class="fas fa-map-marker-alt"></i> ZONE +</button>
+                            </div>
+                            <div class="mobile-call-ui clickable-element" data-info="Simulated Call Interface">
+                                <div class="mobile-top-bar">
+                                    <span>9:41</span>
+                                    <span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i></span>
+                                </div>
+                                <div class="call-info">
+                                    <div class="call-icon-bg"><i class="fas fa-phone"></i></div>
+                                    <p class="phone-number">+1 [415] 678-2345</p>
+                                    <p class="call-status">Calling</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catalog Content -->
+                <div id="catalog-content" class="capability-tab-content">
+                    <div class="content-text">
+                        <h2>Product Catalog</h2>
+                        <p>Intuitive tools that empower customers to manage their accounts with ease, freeing up your team.</p>
+                    </div>
+                    <div class="content-visual catalog-visual">
+                         <div class="mockup-catalog-panel">
+                            <div class="addons-section">
+                                <p><i class="fas fa-plus-circle"></i> ADD-ONS</p>
+                                <div class="addon-icons">
+                                    <div class="addon-icon netflix clickable-element" data-info="Netflix Addon"><i class="fas fa-film"></i></div>
+                                    <div class="addon-icon apple clickable-element" data-info="Apple Addon"><i class="fab fa-apple"></i></div>
+                                    <div class="addon-icon spotify clickable-element" data-info="Spotify Addon"><i class="fab fa-spotify"></i></div>
+                                </div>
+                            </div>
+                            <div class="plan-details-box clickable-element" data-info="View Total Unlimited Plan Details">
+                                <span class="mobile-app-only">MOBILEAPP ONLY <i class="fas fa-arrow-right"></i></span>
+                                <h3>TOTAL UNLIMITED</h3>
+                                <p><i class="fas fa-check-circle"></i> Unlimited minutes</p>
+                                <p><i class="fas fa-check-circle"></i> 50GB High-Speed Data</p>
+                                <p><i class="fas fa-check-circle"></i> Free Roaming Zone A</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Content -->
+                <div id="events-content" class="capability-tab-content">
+                    <div class="content-text">
+                        <h2>Real-Time Event Processing</h2>
+                        <p>Monitor and react to system events in real-time for proactive management and automation.</p>
+                    </div>
+                    <div class="content-visual events-visual">
+                        <div class="mockup-events-panel">
+                            <h4>Real-Time Event Stream</h4>
+                            <div class="event-item clickable-element" data-info="View Critical Event: CPU > 90% on server_prod_01">
+                                <span class="event-time">10:35:02</span>
+                                <span class="event-type critical"><i class="fas fa-exclamation-triangle"></i> CRITICAL</span>
+                                <span class="event-desc">System CPU > 90% on server_prod_01</span>
+                            </div>
+                            <div class="event-item clickable-element" data-info="View Warning: Low disk space on db_replica_03">
+                                <span class="event-time">10:35:01</span>
+                                <span class="event-type warning"><i class="fas fa-exclamation-circle"></i> WARNING</span>
+                                <span class="event-desc">Low disk space on db_replica_03</span>
+                            </div>
+                            <div class="event-item clickable-element" data-info="View Info: User 'admin_test' logged in">
+                                <span class="event-time">10:34:58</span>
+                                <span class="event-type info"><i class="fas fa-info-circle"></i> INFO</span>
+                                <span class="event-desc">User 'admin_test' logged in from 192.168.1.10</span>
+                            </div>
+                            <div class="event-item clickable-element" data-info="View Success: Backup completed for primary_db">
+                                <span class="event-time">10:34:55</span>
+                                <span class="event-type success"><i class="fas fa-check-circle"></i> SUCCESS</span>
+                                <span class="event-desc">Backup completed for primary_db</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bss-oss-bottom-nav services-detail-bottom-nav">
+                <a href="index.html#products" class="nav-item clickable-element" data-info="Go to Products"><i class="fas fa-arrow-up"></i> PRODUCTS +</a>
+                <a href="index.html#services" class="nav-item clickable-element" data-info="Go to Solutions">SOLUTIONS +</a>
+                <a href="index.html#portfolio" class="nav-item clickable-element" data-info="Go to Resources">RESOURCES +</a>
+                <a href="services-detail.html" class="nav-item active clickable-element" data-info="Current Page: Services">SERVICES</a>
+                <a href="index.html#contact" class="nav-cta clickable-element" data-info="Book a Meeting">BOOK A MEETING</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Modal Structure (ensure this is present if using modals) -->
+    <div id="genericModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn clickable-element" data-info="Close Modal">×</span>
+            <h3 id="modalTitle">Modal Title</h3>
+            <p id="modalMessage">Modal message goes here.</p>
+            <img id="modalImage" src="" alt="Modal Image" style="display:none; max-width:100%; margin-top:15px;">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

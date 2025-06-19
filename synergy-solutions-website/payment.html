@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Synergy Solutions</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --theme-bg-page: #D8DDE1;
+            --theme-bg-container: #FFFFFF;
+            --theme-primary-accent: #17A2B8;
+            --theme-primary-accent-hover: #138496;
+            --theme-text-dark: #2F3B4C;
+            --theme-text-medium: #5A6A7F;
+            --theme-text-light: #FFFFFF;
+            --theme-border-color: #CED4DA;
+            --theme-input-bg: #FFFFFF;
+            --theme-input-focus-border: var(--theme-primary-accent);
+            --theme-input-focus-shadow: rgba(23, 162, 184, 0.25);
+            --theme-success-color: #28A745;
+            --theme-error-color: #DC3545;
+            --font-primary: 'Roboto', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+            --border-radius-main: 12px;
+            --border-radius-small: 8px;
+            --box-shadow-main: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            background-color: var(--theme-bg-page);
+            font-family: var(--font-primary);
+            color: var(--theme-text-dark);
+            margin: 0;
+            padding: 20px 0;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scrollbars during animations */
+        }
+
+        .payment-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: var(--theme-bg-container);
+            padding: 35px 45px;
+            border-radius: var(--border-radius-main);
+            box-shadow: var(--box-shadow-main);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .initial-hidden { /* Used by JS to hide elements before animating in */
+            opacity: 0;
+        }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .payment-container h1,
+        .cart-summary,
+        .shipping-details,
+        .payment-details,
+        .back-to-shop-container { /* Wrapper for back-to-shop link for animation */
+            opacity: 0; /* Start hidden, JS will trigger animation */
+        }
+
+
+        .payment-container h1 {
+            text-align: center;
+            color: var(--theme-text-dark);
+            margin-bottom: 35px;
+            font-family: var(--font-secondary);
+            font-weight: 700;
+            font-size: 2.2rem;
+        }
+        .payment-container h1 .fas {
+            margin-right: 10px;
+            color: var(--theme-primary-accent);
+        }
+
+        .cart-summary, .payment-details, .shipping-details {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #E9ECEF;
+        }
+        .cart-summary:last-child, .payment-details:last-child, .shipping-details:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--theme-text-dark);
+            margin-bottom: 25px;
+            font-family: var(--font-secondary);
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--theme-primary-accent);
+            display: inline-block;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--theme-border-color);
+            opacity: 0; /* Start hidden for JS animation */
+        }
+        .cart-item.loaded { /* Class added by JS to trigger animation */
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: var(--border-radius-small);
+            margin-right: 20px;
+            border: 1px solid var(--theme-border-color);
+        }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h4 {
+            font-size: 1.15rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .cart-item-details p { font-size: 0.9rem; color: var(--theme-text-medium); margin: 0; }
+        .cart-item-price { font-size: 1.15rem; font-weight: 600; }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 25px;
+        }
+        .cart-total span { color: var(--theme-primary-accent); font-size: 1.5rem; }
+
+        #cartItemsList p { /* For "loading" or "empty" messages */
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        #cartItemsList p.visible {
+            opacity: 1;
+        }
+        #cartItemsList p a { color: var(--theme-primary-accent); text-decoration: none; font-weight: 500; }
+        #cartItemsList p a:hover { text-decoration: underline; }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; color: var(--theme-text-medium); }
+        .form-group input, .form-group select {
+            padding: 12px 15px;
+            border: 1px solid var(--theme-border-color);
+            border-radius: var(--border-radius-small);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            background-color: var(--theme-input-bg);
+            color: var(--theme-text-dark);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .form-group input::placeholder { color: #A9B4C2; }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--theme-input-focus-border);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--theme-input-focus-shadow);
+        }
+
+        .cta-button {
+            background-color: var(--theme-primary-accent);
+            color: var(--theme-text-light);
+            border: none;
+            padding: 14px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: var(--font-primary);
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-button:hover { background-color: var(--theme-primary-accent-hover); }
+        .cta-button:active { transform: translateY(1px); }
+        .cta-button:disabled { background-color: #A9B4C2; cursor: not-allowed; }
+        .cta-button .fas { margin-right: 8px; }
+
+        .pay-now-btn { display: block; width: 100%; padding: 16px; font-size: 1.2rem; margin-top: 25px; }
+
+        #paymentMessage {
+            text-align: center;
+            font-weight: 500;
+            font-size: 1rem;
+            border-radius: var(--border-radius-small);
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out, max-height 0.4s ease-out, padding 0.3s ease-out, margin-top 0.3s ease-out, border-width 0.3s ease-out;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            border-width: 0px;
+        }
+        #paymentMessage.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            max-height: 150px; /* Adjust as needed for multi-line messages */
+            padding: 10px;
+            margin-top: 20px;
+            border-width: 1px;
+        }
+        #paymentMessage.success { background-color: #e9f7ef; color: var(--theme-success-color); border-color: var(--theme-success-color); }
+        #paymentMessage.error { background-color: #fce8e6; color: var(--theme-error-color); border-color: var(--theme-error-color); }
+        #paymentMessage.processing { background-color: #e7f3fe; color: #0056b3; border-color: #0056b3; }
+
+        .back-to-shop-container { text-align: center; }
+        .back-to-shop {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--theme-primary-accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            padding: 5px 10px;
+            border-radius: var(--border-radius-small);
+        }
+        .back-to-shop:hover { text-decoration: underline; color: var(--theme-primary-accent-hover); }
+        .back-to-shop .fas { margin-right: 5px; }
+
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+        .light-ripple-target .ripple-effect { background-color: rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h1 class="initial-hidden"><i class="fas fa-credit-card"></i> Secure Checkout</h1>
+
+        <section class="cart-summary initial-hidden">
+            <h2>Your Order</h2>
+            <div id="cartItemsList">
+                <p class="loading-message visible">Loading your cart...</p>
+                <!-- Cart items will be loaded here by JS -->
+            </div>
+            <div class="cart-total">
+                Total: <span id="cartTotalAmount">$0.00</span>
+            </div>
+        </section>
+
+        <section class="shipping-details initial-hidden">
+            <h2>Shipping Information</h2>
+            <form id="shippingForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required class="clickable-element" data-info="Shipping Full Name" placeholder="John M. Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" required class="clickable-element" data-info="Shipping Address" placeholder="1234 Main St">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" required class="clickable-element" data-info="Shipping City" placeholder="Anytown">
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode">ZIP Code</label>
+                        <input type="text" id="zipCode" name="zipCode" required class="clickable-element" data-info="Shipping ZIP Code" placeholder="90210">
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="payment-details initial-hidden">
+            <h2>Payment Details</h2>
+            <form id="paymentForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="cardName">Name on Card</label>
+                        <input type="text" id="cardName" name="cardName" required class="clickable-element" data-info="Cardholder Name" placeholder="John M. Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="xxxx xxxx xxxx xxxx" required class="clickable-element" data-info="Card Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" required class="clickable-element" data-info="Card Expiry Date">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="xxx" required class="clickable-element" data-info="Card CVV">
+                    </div>
+                </div>
+                <button type="submit" id="payNowButton" class="cta-button pay-now-btn clickable-element" data-info="Pay Now">
+                    <i class="fas fa-lock"></i> Pay Now
+                </button>
+            </form>
+            <p id="paymentMessage"></p>
+        </section>
+        <div class="back-to-shop-container initial-hidden">
+             <a href="index.html" class="back-to-shop clickable-element light-ripple-target" data-info="Back to Shopping"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        </div>
+    </div>
+
+    <script src="payment.js"></script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synergy Solutions - Innovate. Integrate. Inspire.</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- New styles for the Resource Modal -->
+    <style>
+        /* --- Styles for Resource Modal --- */
+        #resourceModal {
+            display: none; 
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* Allow scrolling within the modal if content is long */
+            background: rgba(14, 13, 29, 0.8);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .resource-modal-content {
+            background: linear-gradient(135deg, #2c215e, #1e1548); /* Purple gradient background from video */
+            color: #e0e0ff;
+            font-family: 'Roboto', sans-serif;
+            margin: 3% auto;
+            padding: 20px 40px 40px 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1100px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .resource-modal-content .close-modal-btn {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .resource-modal-content .close-modal-btn:hover,
+        .resource-modal-content .close-modal-btn:focus {
+            color: #fff;
+        }
+
+        .resource-section {
+            margin-bottom: 40px;
+        }
+        .resource-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .resource-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Testimonials Grid */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .testimonial-card {
+            background: rgba(58, 44, 122, 0.7); /* Darker purple */
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid #ab47bc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .testimonial-card .quote {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #d0c8ff;
+        }
+        .testimonial-card .author {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+            text-align: right;
+            margin-top: auto;
+        }
+
+        /* Pricing Grid */
+        .pricing-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .pricing-card {
+            background-color: #3a2c7a;
+            border: 2px solid #5a4aa5;
+            border-radius: 10px;
+            padding: 30px;
+            width: 340px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden; /* For the popular tag */
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+        .pricing-card.popular {
+            border: 2px solid #fff;
+            transform: scale(1.05);
+        }
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .popular-tag {
+            background: #fff;
+            color: #3a2c7a;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 5px 15px;
+            border-radius: 20px;
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .plan-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .pricing-card.popular .plan-name {
+            margin-top: 50px; /* Make space for the tag */
+        }
+        .plan-limit {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #d0c8ff;
+            margin-bottom: 20px;
+        }
+        .plan-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #c0b8f0;
+            min-height: 100px; 
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .plan-price {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .plan-price .per-month {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #d0c8ff;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-logo">
+            <span class="logo-part part-s">S</span><span class="logo-part part-y">y</span><span class="logo-part part-n">n</span><span class="logo-part part-e">e</span><span class="logo-part part-r">r</span><span class="logo-part part-g">g</span><span class="logo-part part-y">y</span>
+            <span class="logo-part part-sol">Solutions</span>
+        </div>
+        <div class="loader-bar-container"><div class="loader-bar"></div></div>
+    </div>
+
+    <header class="animate-on-scroll">
+        <nav>
+            <div class="logo clickable-element" data-info="Homepage Logo">Synergy<span>Solutions</span></div>
+            <ul>
+                <li><a href="#hero" class="nav-link clickable-element" data-info="Go to Hero Section">Home</a></li>
+                <li><a href="#services" class="nav-link clickable-element" data-info="Go to Services">Services</a></li>
+                <li><a href="#products" class="nav-link clickable-element" data-info="Go to Products">Products</a></li>
+                <li><a href="#portfolio" class="nav-link clickable-element" data-info="Go to Portfolio">Portfolio</a></li>
+                <li><a href="#clients" class="nav-link clickable-element" data-info="Go to Clients">Clients</a></li>
+                <li><a href="#sustainability" class="nav-link clickable-element" data-info="Go to Sustainability">Sustainability</a></li>
+                <li><a href="#contact" class="nav-link clickable-element" data-info="Go to Contact">Contact</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="menu-toggle clickable-element" aria-label="Toggle menu" data-info="Toggle Navigation Menu">☰</button>
+                <a href="payment.html" id="cart-icon-link" class="cart-icon-container clickable-element" data-info="View Cart & Checkout">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-counter">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section new-hero">
+            <div class="hero-background-liquid"></div>
+            <div class="hero-content">
+                <span class="hero-tagline animate-hero-tagline">Connection & Innovation</span>
+                <h1>
+                    <span class="hero-h1-line hero-h1-line1">Share Quality Ideas.</span>
+                    <span class="hero-h1-line hero-h1-line2">And Space.</span>
+                </h1>
+                <p class="animate-hero-p">Synergy Solutions redefines how businesses connect, create, and conquer. Experience the future, today.</p>
+                <a href="#services" class="cta-button hero-cta clickable-element animate-hero-cta" data-info="Learn More">Learn More About Us <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <a href="#services" class="scroll-down-indicator clickable-element" aria-label="Scroll down" data-info="Scroll to Services">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <section id="services" class="services-section animate-on-scroll bss-oss-section">
+            <p class="bss-oss-tagline">[ EFFICIENCY, SCALABILITY, AND AGILITY ]</p>
+            <h2>Our Core Capabilities</h2>
+            <div class="tabs-container bss-tabs-container">
+                <div class="tab-buttons bss-tab-buttons">
+                    <button class="tab-button active clickable-element" data-tab="platform" data-info="View Platform Suite"><i class="fas fa-file-invoice-dollar"></i> Platform Suite</button>
+                    <button class="tab-button clickable-element" data-tab="analytics" data-info="View Advanced Analytics"><i class="fas fa-chart-line"></i> Advanced Analytics</button>
+                    <button class="tab-button clickable-element" data-tab="integration" data-info="View Seamless Integration"><i class="fas fa-cogs"></i> Seamless Integration</button>
+                    <button class="tab-button clickable-element" data-tab="brand-kits" data-info="View Brand Kits"><i class="fas fa-palette"></i> Brand Kits</button>
+                </div>
+                <div class="tab-content-area bss-tab-content-area">
+                    <div id="platform" class="tab-content active">
+                        <div class="bss-content-wrapper">
+                            <div class="bss-text-content">
+                                <h3>Our All-in-One Platform Suite</h3>
+                                <p>Real-time convergent billing, online charging systems, product catalogs, and event management. Everything you need to scale.</p>
+                            </div>
+                            <div class="bss-image-content">
+                                <img src="https://picsum.photos/seed/platform/600/300" alt="Platform UI Mockup" class="tab-image clickable-element" data-info="Platform UI Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="analytics" class="tab-content">
+                        <div class="bss-content-wrapper">
+                            <div class="bss-text-content">
+                                <h3>Advanced Analytics & Reporting</h3>
+                                <p>Unlock actionable insights with our AI-powered analytics. Create reports, forecasts, and dashboards effortlessly.</p>
+                            </div>
+                            <div class="bss-image-content">
+                                <img src="https://picsum.photos/seed/analytics/600/300" alt="Analytics Dashboard Mockup" class="tab-image clickable-element" data-info="Analytics Dashboard Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="integration" class="tab-content">
+                        <div class="bss-content-wrapper">
+                           <div class="bss-text-content">
+                                <h3>Seamless Integration Services</h3>
+                                <p>Connect disparate systems and streamline your workflows with our robust integration capabilities.</p>
+                            </div>
+                            <div class="bss-image-content">
+                                <img src="https://picsum.photos/seed/integration/600/300" alt="Integration Flow Mockup" class="tab-image clickable-element" data-info="Integration Flow Image">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="brand-kits" class="tab-content brand-kits-tab-content">
+                        <div class="bss-content-wrapper">
+                            <div class="bss-text-content">
+                                <h3>Customizable Brand Kits</h3>
+                                <p>Empower your teams with pre-defined brand assets and guidelines for consistent messaging across all channels.</p>
+                                <div class="brand-kit-list">
+                                    <div class="brand-kit-item clickable-element" data-brand="ECorp">
+                                        <span class="brand-logo-placeholder" style="background-color: #4CAF50;">EC</span> ECorp
+                                        <i class="fas fa-cog brand-kit-settings clickable-element" data-brand="ECorp" data-info="ECorp Settings"></i>
+                                    </div>
+                                    <div class="brand-kit-item clickable-element" data-brand="ICorp">
+                                        <span class="brand-logo-placeholder" style="background-color: #FF9800;">IC</span> ICorp
+                                        <i class="fas fa-cog brand-kit-settings clickable-element" data-brand="ICorp" data-info="ICorp Settings"></i>
+                                    </div>
+                                    <div class="brand-kit-item active clickable-element" data-brand="The Agency">
+                                        <span class="brand-logo-placeholder" style="background-color: #F44336;">TA</span> The Agency
+                                        <i class="fas fa-cog brand-kit-settings clickable-element" data-brand="The Agency" data-info="The Agency Settings"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- No image for brand kits or a placeholder image if needed -->
+                            <div class="bss-image-content">
+                                <img src="https://picsum.photos/seed/brandkitplaceholder/600/300" alt="Brand Kit Visual" class="tab-image clickable-element" data-info="Brand Kit Visual">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bss-oss-bottom-nav">
+                    <button class="nav-item clickable-element" data-info="Products"><i class="fas fa-arrow-up"></i> PRODUCTS +</button>
+                    <button class="nav-item clickable-element" data-info="Solutions">SOLUTIONS +</button>
+                    <!-- MODIFICATION: Added new Resources button -->
+                    <button class="nav-item clickable-element" id="openResourcesBtn" data-info="Resources">RESOURCES +</button>
+                    <a href="services-detail.html" class="nav-item clickable-element" data-info="Services Details">SERVICES</a>
+                    <a href="#contact" class="nav-cta clickable-element" data-info="Book a Meeting">BOOK A MEETING</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="products-section animate-on-scroll">
+            <h2>Featured Products</h2>
+            <div class="product-grid">
+                <!-- Product items injected by JavaScript -->
+            </div>
+        </section>
+
+        <section id="portfolio" class="dynamic-portfolio-section animate-on-scroll">
+            <div class="angled-background-container"></div>
+            <div class="portfolio-content-wrapper">
+                <div class="case-study-slider clickable-element" data-info="Current Case Study Image"></div>
+                <div class="slider-navigation-details">
+                    <h2 class="case-title"></h2>
+                    <div class="case-tags"></div>
+                    <a href="#" class="read-more-btn-dynamic clickable-element" data-info="Read More about Case Study">READ MORE <i class="fas fa-arrow-right"></i></a>
+                </div>
+                 <div class="slider-controls">
+                    <button class="portfolio-nav-btn prev-case clickable-element" data-info="Previous Case Study"><i class="fas fa-chevron-left"></i></button>
+                    <button class="portfolio-nav-btn next-case clickable-element" data-info="Next Case Study"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="large-number-display"></div>
+            </div>
+            <a href="#all-cases" class="view-all-cases-btn clickable-element" data-info="View All Case Studies">
+                <i class="fas fa-th-large"></i> VIEW ALL CASES
+            </a>
+        </section>
+        <section id="all-cases" style="display:none; padding: 50px; text-align: center; background: #f0f0f0;" class="animate-on-scroll">
+            <h2>All Case Studies</h2>
+            <p>This is where a full list or grid of all case studies would appear. For now, it's a placeholder.</p>
+            <div id="all-cases-grid" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px;"></div>
+            <p style="margin-top:30px;"><a href="#portfolio" class="cta-button clickable-element" data-info="Back to Featured Cases">Back to Featured</a></p>
+        </section>
+
+        <section id="clients" class="clients-section animate-on-scroll">
+            <h2>Trusted By Leading Brands</h2>
+            <div class="client-logos-container">
+                <div class="client-logo-row">
+                    <div class="client-logo-pair">
+                        <span class="client-logo-item clickable-element" data-client="Brex"><i class="fab fa-bandcamp"></i> Brex</span>
+                        <span class="client-logo-item clickable-element" data-client="Runway"><i class="fab fa-fly"></i> Runway</span>
+                    </div>
+                    <div class="client-logo-pair">
+                        <span class="client-logo-item clickable-element" data-client="Supercell"><i class="fas fa-gamepad"></i> Supercell</span>
+                        <span class="client-logo-item clickable-element" data-client="Retool"><i class="fas fa-tools"></i> Retool</span>
+                    </div>
+                </div>
+                <button class="meet-customers-btn clickable-element" data-info="Meet Our Customers">
+                    Meet our customers <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="client-logo-row">
+                     <div class="client-logo-pair">
+                        <span class="client-logo-item clickable-element" data-client="OpenAI"><i class="fas fa-brain"></i> OpenAI</span>
+                        <span class="client-logo-item clickable-element" data-client="CashApp"><i class="fas fa-dollar-sign"></i> Cash App</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonials-container">
+                <h3>What Our Clients Say</h3>
+                <div class="testimonial-carousel-wrapper">
+                    <div class="testimonial-carousel">
+                        <!-- Slides from JS -->
+                    </div>
+                </div>
+                <button class="testimonial-button prev-testimonial clickable-element" data-info="Previous Testimonial"><i class="fas fa-chevron-left"></i></button>
+                <button class="testimonial-button next-testimonial clickable-element" data-info="Next Testimonial"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <section id="sustainability" class="sustainability-section animate-on-scroll">
+            <h2>Our Commitment to Sustainability</h2>
+            <div class="sustainability-top-actions">
+                <button class="download-report-btn clickable-element" data-info="Download Sustainability Report">
+                    <i class="fas fa-download"></i> Download Full Report
+                </button>
+            </div>
+            <div class="sustainability-content">
+                <div class="emissions-chart-container">
+                    <h3>Embodied Carbon Emissions <i class="fas fa-download download-chart-data clickable-element" data-info="Download Emissions Data" data-chart="emissions"></i></h3>
+                    <p class="chart-subtitle">Intensity measured by kgCO<sub>2</sub>e/m<sup>2</sup></p>
+                    <div class="filters">
+                        <span>Filter by Type:</span>
+                        <button class="filter-btn active clickable-element" data-filter="all" data-info="Filter All Emissions">All</button>
+                        <button class="filter-btn clickable-element" data-filter="refurbishment" data-info="Filter Refurbishment Emissions">Refurbishment</button>
+                        <button class="filter-btn clickable-element" data-filter="new-build" data-info="Filter New Build Emissions">New build</button>
+                    </div>
+                     <div class="chart-key">
+                        <p><span class="key-line target-2030"></span> 500 kgCO<sub>2</sub>e/m<sup>2</sup> - Target 2030</p>
+                        <p><span class="key-line target-2025"></span> 600 kgCO<sub>2</sub>e/m<sup>2</sup> - Target 2025</p>
+                    </div>
+                    <div class="bar-chart-wrapper">
+                        <div class="bar-chart">
+                            <!-- Bars from JS -->
+                        </div>
+                        <div class="target-line line-2030" data-target="500"></div>
+                        <div class="target-line line-2025" data-target="600"></div>
+                        <div class="y-axis-labels">
+                            <!-- Labels from JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-metrics">
+                    <h3>Managed Portfolio Performance <i class="fas fa-download download-chart-data clickable-element" data-info="Download Portfolio Metrics Data" data-chart="portfolio"></i></h3>
+                    <div class="metric-item">
+                        <h4>Managed portfolio carbon footprint</h4>
+                        <p class="metric-value">45,048 <span class="unit">tCO<sub>2</sub>e</span></p>
+                        <p class="metric-change up">↑ 16% <span class="from">from 2019</span></p>
+                        <div class="metric-bar-chart">
+                            <div class="year-bar clickable-element" data-info="Carbon Footprint 2022" style="width: 100%;"><span class="year-label">2022</span> <span class="year-value">45,048</span></div>
+                            <div class="year-bar clickable-element" data-info="Carbon Footprint 2021" style="width: 75.7%;"><span class="year-label">2021</span> <span class="year-value">34,111</span></div>
+                            <div class="year-bar clickable-element" data-info="Carbon Footprint 2020" style="width: 72.8%;"><span class="year-label">2020</span> <span class="year-value">32,813</span></div>
+                            <div class="year-bar clickable-element" data-info="Carbon Footprint 2019" style="width: 85.8%;"><span class="year-label">2019</span> <span class="year-value">38,673</span></div>
+                        </div>
+                    </div>
+                     <div class="metric-item">
+                        <h4>Managed portfolio energy intensity</h4>
+                        <p class="metric-value">123 <span class="unit">kWh/m<sup>2</sup></span></p>
+                        <p class="metric-change down">↓ 22% <span class="from">from 2019</span></p>
+                         <div class="metric-bar-chart">
+                            <div class="year-bar clickable-element" data-info="Energy Intensity 2022" style="width: 78.3%;"><span class="year-label">2022</span> <span class="year-value">123</span></div>
+                            <div class="year-bar clickable-element" data-info="Energy Intensity 2021" style="width: 81.5%;"><span class="year-label">2021</span> <span class="year-value">128</span></div>
+                            <div class="year-bar clickable-element" data-info="Energy Intensity 2020" style="width: 86%;"><span class="year-label">2020</span> <span class="year-value">135</span></div>
+                            <div class="year-bar clickable-element" data-info="Energy Intensity 2019" style="width: 100%;"><span class="year-label">2019</span> <span class="year-value">157</span></div>
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <h4>Managed portfolio energy consumption</h4>
+                        <p class="metric-value">47,790,662 <span class="unit">kWh</span></p>
+                        <p class="metric-change down">↓ 27% <span class="from">from 2019</span></p>
+                         <div class="metric-bar-chart">
+                            <div class="year-bar clickable-element" data-info="Energy Consumption 2022" style="width: 73.3%;"><span class="year-label">2022</span> <span class="year-value">47,790,662</span></div>
+                            <div class="year-bar clickable-element" data-info="Energy Consumption 2021" style="width: 75.6%;"><span class="year-label">2021</span> <span class="year-value">49,324,077</span></div>
+                            <div class="year-bar clickable-element" data-info="Energy Consumption 2020" style="width: 74.8%;"><span class="year-label">2020</span> <span class="year-value">48,784,205</span></div>
+                            <div class="year-bar clickable-element" data-info="Energy Consumption 2019" style="width: 100%;"><span class="year-label">2019</span> <span class="year-value">65,198,706</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section animate-on-scroll">
+            <h2>Get in Touch</h2>
+            <p>Ready to elevate your business? Contact us today to learn more about our solutions.</p>
+            <form id="contactForm">
+                <input type="text" name="name" placeholder="Your Name" required class="clickable-element" data-info="Name Input">
+                <input type="email" name="email" placeholder="Your Email" required class="clickable-element" data-info="Email Input">
+                <textarea name="message" placeholder="Your Message" rows="5" required class="clickable-element" data-info="Message Textarea"></textarea>
+                <button type="submit" class="cta-button clickable-element" data-info="Send Contact Message">Send Message</button>
+            </form>
+            <p id="formMessage" style="margin-top: 15px;"></p>
+        </section>
+    </main>
+
+    <footer class="animate-on-scroll">
+        <p>© <span id="currentYear"></span> Synergy Solutions. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="#" aria-label="LinkedIn" class="clickable-element" data-info="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+            <a href="#" aria-label="Twitter" class="clickable-element" data-info="Twitter Profile"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Facebook" class="clickable-element" data-info="Facebook Page"><i class="fab fa-facebook"></i></a>
+        </div>
+    </footer>
+
+    <!-- Generic Modal Structure -->
+    <div id="genericModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn clickable-element" data-info="Close Modal">×</span>
+            <h3 id="modalTitle">Modal Title</h3>
+            <p id="modalMessage">Modal message goes here.</p>
+            <img id="modalImage" src="" alt="Modal Image" style="display:none; max-width:100%; margin-top:15px;">
+        </div>
+    </div>
+    
+    <!-- MODIFICATION: New Modal for Resources (Testimonials & Pricing) -->
+    <div id="resourceModal" class="modal">
+        <div class="resource-modal-content">
+            <span class="close-modal-btn clickable-element" id="closeResourceModal" data-info="Close Resource Modal">×</span>
+            
+            <!-- Testimonials Section from Video -->
+            <div class="resource-section">
+                <h3 class="resource-title">Happy Sellers</h3>
+                <div class="testimonials-grid">
+                    <!-- Testimonial Card 1 -->
+                    <div class="testimonial-card">
+                        <p class="quote">"...The automated feedback system runs quietly in the background, and we've noticed our ratings stay more consistent without needing to chase anything manually. It's been a great fit for our team and a time-saver we didn't know we needed."</p>
+                        <p class="author">- Watchem - UK Amazon Seller</p>
+                    </div>
+                    <!-- Testimonial Card 2 -->
+                    <div class="testimonial-card">
+                        <p class="quote">"I really like how it sends out follow-up requests for feedback automatically, because that's something I always used to forget. It makes a difference knowing that's taken care of and still within Amazon's rules. It just helps me run my store more confidently."</p>
+                        <p class="author">- Sophie Wilson - USA Amazon Seller</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Pricing Section from Video -->
+            <div class="resource-section">
+                <h3 class="resource-title">Flexible Pricing</h3>
+                <div class="pricing-grid">
+                    <!-- Pricing Card 1 -->
+                    <div class="pricing-card popular">
+                        <span class="popular-tag">MOST POPULAR</span>
+                        <h4 class="plan-name">Growth</h4>
+                        <p class="plan-limit">Up to 2,500 orders per month</p>
+                        <div class="plan-description">
+                            <p>Ideal for sellers who are expanding their product range and need more review automation.</p>
+                        </div>
+                        <div class="plan-price">$29.99 <span class="per-month">per month</span></div>
+                    </div>
+                    <!-- Pricing Card 2 -->
+                    <div class="pricing-card">
+                         <h4 class="plan-name">Pro</h4>
+                        <p class="plan-limit">Up to 10,000 orders per month</p>
+                        <div class="plan-description">
+                           <p>Great for professional Amazon sellers who need detailed insights and performance tracking.</p>
+                        </div>
+                        <div class="plan-price">$59.99 <span class="per-month">per month</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Added Notification -->
+    <div id="product-added-notification" class="notification">
+        Product added to cart!
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- MODIFICATION: New script for Resource Modal functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const openResourcesBtn = document.getElementById('openResourcesBtn');
+            const resourceModal = document.getElementById('resourceModal');
+            const closeResourceModalBtn = document.getElementById('closeResourceModal');
+
+            // Check if all required elements exist to prevent errors
+            if (openResourcesBtn && resourceModal && closeResourceModalBtn) {
+                
+                // Function to open the modal
+                const openModal = () => {
+                    resourceModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                };
+
+                // Function to close the modal
+                const closeModal = () => {
+                    resourceModal.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Restore background scrolling
+                };
+                
+                // Add click event listener to the "RESOURCES +" button
+                openResourcesBtn.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent any default button action
+                    openModal();
+                });
+
+                // Add click event listener to the modal's close 'x' button
+                closeResourceModalBtn.addEventListener('click', closeModal);
+
+                // Add click event listener to close modal when clicking on the background overlay
+                window.addEventListener('click', (event) => {
+                    if (event.target == resourceModal) {
+                        closeModal();
+                    }
+                });
+
+                // Add keyboard event listener to close modal with the 'Escape' key
+                window.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && resourceModal.style.display === 'block') {
+                        closeModal();
+                    }
+                });
+
+            } else {
+                console.error('Error: One or more elements for the resource modal could not be found in the DOM.');
+            }
+        });
+    </script>
+</body>
+</html>
